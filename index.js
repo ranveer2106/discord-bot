@@ -4,6 +4,16 @@ import { REST, Routes } from 'discord.js';
 
 // const fetch = require("node-fetch")
 import fetch from 'node-fetch';
+
+// require("dotenv").config();
+
+// import { DotenvConfigOptions } from "dotenv"
+
+import * as dotenv from "dotenv";
+dotenv.config();
+
+// const DotenvConfigOptions = "dotenv"
+
 // const fetch = require('node-fetch');
 
 const sadWords = ["sad", "depress", "unhappy", "angry"]
@@ -104,7 +114,18 @@ client.on("messageCreate", async msg => {
 
     let pop = msg.author
 
-    if (msg.guild) {
+    if (msg.content === "$inspire") {
+        await getQuote().then(async quote => {
+            // await interaction.channel.send(quote)
+            // await interaction.reply(quote)
+            await msg.channel.send(`${msg.author} ${quote}`);
+        })
+    }
+    else if (msg.content === "ping") {
+        msg.channel.send(`pong`);
+    }
+
+    else if (msg.guild) {
         console.log("yo")
         msg.channel.send(`${pop} i love ${msg.content}`);
     }
@@ -116,4 +137,4 @@ client.on("messageCreate", async msg => {
 })
 
 
-client.login('MTAzODY3NzcxNzM3NTI1ODYzNg.G5sNv1.IbipB1iBC6t_c8GezdSl03JhQd9Q-DBIyPa-Us');
+client.login(process.env.token);
