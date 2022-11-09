@@ -66,14 +66,22 @@ client.on('ready', () => {
 
 const getQuote = () => {
     return fetch("https://zenquotes.io/api/random")
-        .then(res => {
-            return res.json()
-        })
-        .then(data => {
-            return data[0]["q"] + "-" + data[0]["a"]
-        })
+        .then(res => { return res.json() })
+        .then(data => { return data[0]["q"] + "-" + data[0]["a"] })
 }
 
+const anime = () => {
+    return fetch('https://animechan.vercel.app/api/random')
+        .then(response => { return response.json() })
+        .then(quote => { return `from ${quote["anime"]} "${quote["quote"]}" by ${quote["character"]}` })
+}
+const GOT = () => {
+    return fetch('https://api.gameofthronesquotes.xyz/v1/random')
+        .then(response => { return response.json() })
+        .then(quote => { return `"${quote["sentence"]}" by ${quote["character"]["name"]}` })
+}
+
+// console.log(anime());
 
 client.on('interactionCreate', async interaction => {
     console.log("you")
@@ -121,6 +129,21 @@ client.on("messageCreate", async msg => {
             await msg.channel.send(`${msg.author} ${quote}`);
         })
     }
+    else if (msg.content === "anime") {
+        await anime().then(async quote => {
+            // await interaction.channel.send(quote)
+            // await interaction.reply(quote)
+            await msg.channel.send(`${msg.author} ${quote}`);
+        })
+    }
+    else if (msg.content === "$got") {
+        await GOT().then(async quote => {
+            // await interaction.channel.send(quote)
+            // await interaction.reply(quote)
+            await msg.channel.send(`${msg.author} ${quote}`);
+        })
+    }
+
     else if (msg.content === "ping") {
         msg.channel.send(`pong`);
     }
