@@ -80,8 +80,30 @@ const GOT = () => {
         .then(response => { return response.json() })
         .then(quote => { return `"${quote["sentence"]}" by ${quote["character"]["name"]}` })
 }
+const yomamma = () => {
+    return fetch('https://yomomma-api.herokuapp.com/jokes')
+        .then(response => { return response.json() })
+        .then(quote => { return `${quote["joke"]}` })
+}
+const Dark = () => {
+    return fetch('https://v2.jokeapi.dev/joke/Any?type=single')
+        .then(response => { return response.json() })
+        .then(quote => { return `${quote["joke"]}` })
+}
+const coffee_image = () => {
+    return fetch('https://coffee.alexflipnote.dev/random.json')
+        .then(response => { return response.json() })
+        .then(link => { return `${link["file"]}` })
+}
+const waifu = () => {
+    // return fetch('https://api.waifu.im/random/?selected_tags=waifu')
+    return fetch('https://api.waifu.pics/sfw/waifu')
+        .then(response => { return response.json() })
+        // .then(link => { return `${link["images"][0]["url"]}` })
+        .then(link => { return `${link["url"]}` })
+}
 
-// console.log(anime());
+
 
 client.on('interactionCreate', async interaction => {
     console.log("you")
@@ -136,6 +158,20 @@ client.on("messageCreate", async msg => {
             await msg.channel.send(`${msg.author} ${quote}`);
         })
     }
+    else if (msg.content === "yomamma") {
+        await yomamma().then(async quote => {
+            // await interaction.channel.send(quote)
+            // await interaction.reply(quote)
+            await msg.channel.send(`${msg.author} ${quote}`);
+        })
+    }
+    else if (msg.content === "dark") {
+        await Dark().then(async quote => {
+            // await interaction.channel.send(quote)
+            // await interaction.reply(quote)
+            await msg.channel.send(`${msg.author} ${quote}`);
+        })
+    }
     else if (msg.content === "$got") {
         await GOT().then(async quote => {
             // await interaction.channel.send(quote)
@@ -147,15 +183,38 @@ client.on("messageCreate", async msg => {
     else if (msg.content === "ping") {
         msg.channel.send(`pong`);
     }
+    else if (msg.content === "image") {
+        // msg.channel.send(`pong`);
+        await coffee_image().then(async link => {
+            // await interaction.channel.send(quote)
+            // await interaction.reply(quote)
+            // await msg.channel.send(`${msg.author} ${quote}`);
+            await msg.channel.send("My Bot's message");
+            // console.log(link)
+            await msg.channel.send({ files: [`${link}`] });
+        })
+    }
+    else if (msg.content === "waifu") {
+        // msg.channel.send(`pong`);
+        await waifu().then(async link => {
+            // await interaction.channel.send(quote)
+            // await interaction.reply(quote)
+            // await msg.channel.send(`${msg.author} ${quote}`);
+            // await msg.channel.send("My Bot's message");
+            await console.log(link)
+            await msg.channel.send({ files: [`${link}`] });
+        })
+    }
 
+
+    else if (sadWords.some(word => msg.content.includes(word))) {
+        const encourage = encouragements[Math.floor(Math.random() * encouragements.length)]
+        await msg.reply(encourage)
+    }
     else if (msg.guild) {
-        console.log("yo")
+        // console.log("yo")
         msg.channel.send(`${pop} i love ${msg.content}`);
     }
-    // if (sadWords.some(word => msg.content.includes(word))) {
-    //     const encourage = encouragements[Math.floor(Math.random() * encouragements.length)]
-    //     await msg.reply(encourage)
-    // }
 
 })
 
