@@ -1,20 +1,19 @@
 // const { REST, Routes } = require('discord.js');
+// const fetch = require("node-fetch")
+// require("dotenv").config();
+// import { DotenvConfigOptions } from "dotenv"
+// const DotenvConfigOptions = "dotenv"
+// const fetch = require('node-fetch');
+
+// https://api.nasa.gov/planetary/apod?api_key=Npz06Kczc6QKw0iCMDmWcrliedHxMkuN7OhFVt30
+// https://api.spoonacular.com/recipes/findByIngredients?ingredients=apples,+flour,+sugar&number=2&apiKey=bf82ff9da74c44f28d77cb72534ca2ce
+
 
 import { REST, Routes } from 'discord.js';
-
-// const fetch = require("node-fetch")
 import fetch from 'node-fetch';
-
-// require("dotenv").config();
-
-// import { DotenvConfigOptions } from "dotenv"
-
 import * as dotenv from "dotenv";
 dotenv.config();
 
-// const DotenvConfigOptions = "dotenv"
-
-// const fetch = require('node-fetch');
 
 const sadWords = ["sad", "depress", "unhappy", "angry"]
 
@@ -27,24 +26,24 @@ const commands = [
     },
     {
         name: 'inspire',
-        description: 'Replies with Pong!2',
+        description: 'send an inspirational quote',
     },
 
 ];
 
-// const rest = new REST({ version: '10' }).setToken('MTAzODY3NzcxNzM3NTI1ODYzNg.G5sNv1.IbipB1iBC6t_c8GezdSl03JhQd9Q-DBIyPa-Us');
+const rest = new REST({ version: '10' }).setToken(process.env.token);
 
-// (async () => {
-//     try {
-//         console.log('Started refreshing application (/) commands.');
+(async () => {
+    try {
+        console.log('Started refreshing application (/) commands.');
 
-//         await rest.put(Routes.applicationCommands('1038677717375258636'), { body: commands });
+        await rest.put(Routes.applicationCommands('1038677717375258636'), { body: commands });
 
-//         console.log('Successfully reloaded application (/) commands.');
-//     } catch (error) {
-//         console.error(error);
-//     }
-// })();
+        console.log('Successfully reloaded application (/) commands.');
+    } catch (error) {
+        console.error(error);
+    }
+})();
 
 // const { Client, GatewayIntentBits } = require('discord.js');
 
@@ -61,7 +60,6 @@ const client = new Client({
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    console.log("you log")
 });
 
 const getQuote = () => {
@@ -86,7 +84,7 @@ const yomamma = () => {
         .then(quote => { return `${quote["joke"]}` })
 }
 const Dark = () => {
-    return fetch('https://v2.jokeapi.dev/joke/Any?type=single')
+    return fetch('https://v2.jokeapi.dev/joke/Dark?type=single')
         .then(response => { return response.json() })
         .then(quote => { return `${quote["joke"]}` })
 }
@@ -95,34 +93,21 @@ const coffee_image = () => {
         .then(response => { return response.json() })
         .then(link => { return `${link["file"]}` })
 }
-const waifu = () => {
-    // return fetch('https://api.waifu.im/random/?selected_tags=waifu')
-    return fetch('https://api.waifu.pics/sfw/waifu')
-        .then(response => { return response.json() })
-        // .then(link => { return `${link["images"][0]["url"]}` })
-        .then(link => { return `${link["url"]}` })
-}
+
 
 
 
 client.on('interactionCreate', async interaction => {
-    console.log("you")
-    // interaction.reply("fuxk")
-    // interaction.reply("fuxk")
-    // interaction.channel.send(`@${interaction.author}`)
+
     // if (!interaction.isChatInputCommand()) return;
 
     if (interaction.commandName === 'ping') {
-        await interaction.reply('Pongooooooooooooooo!');
+        await interaction.reply('Pong!');
         // await interaction.followUp('fuc');
         // await interaction.deleteReply();
     }
-    // else if (interaction.guildId === "yo") {
-    // await interaction.reply("gild")
-    // }
     else if (interaction.commandName === 'inspire') {
-        // await interaction.reply('2Pongooooooooooooooo!');
-        // await interaction.reply(`@${interaction.author}`)
+
         await getQuote().then(async quote => {
             // await interaction.channel.send(quote)
             await interaction.reply(quote)
@@ -137,82 +122,38 @@ client.on("messageCreate", async msg => {
 
     if (msg.author.bot) return;
 
-    // let mention = msg.mentions.author()
-    // const user = msg.mentions.users.first();
-    // message.channel.send(`${user} //code`
-    // console.log(user)
-
     let pop = msg.author
 
     if (msg.content === "$inspire") {
-        await getQuote().then(async quote => {
-            // await interaction.channel.send(quote)
-            // await interaction.reply(quote)
-            await msg.channel.send(`${msg.author} ${quote}`);
-        })
+        await getQuote().then(async quote => { await msg.channel.send(`${msg.author} ${quote}`); })
     }
     else if (msg.content === "anime") {
-        await anime().then(async quote => {
-            // await interaction.channel.send(quote)
-            // await interaction.reply(quote)
-            await msg.channel.send(`${msg.author} ${quote}`);
-        })
+        await anime().then(async quote => { await msg.channel.send(`${msg.author} ${quote}`); })
     }
     else if (msg.content === "yomamma") {
-        await yomamma().then(async quote => {
-            // await interaction.channel.send(quote)
-            // await interaction.reply(quote)
-            await msg.channel.send(`${msg.author} ${quote}`);
-        })
+        await yomamma().then(async quote => { await msg.channel.send(`${msg.author} ${quote}`); })
     }
-    else if (msg.content === "dark") {
-        await Dark().then(async quote => {
-            // await interaction.channel.send(quote)
-            // await interaction.reply(quote)
-            await msg.channel.send(`${msg.author} ${quote}`);
-        })
+    else if (msg.content === "joke") {
+        await Dark().then(async quote => { await msg.channel.send(`${msg.author} ${quote}`); })
     }
     else if (msg.content === "$got") {
-        await GOT().then(async quote => {
-            // await interaction.channel.send(quote)
-            // await interaction.reply(quote)
-            await msg.channel.send(`${msg.author} ${quote}`);
-        })
+        await GOT().then(async quote => { await msg.channel.send(`${msg.author} ${quote}`); })
     }
-
     else if (msg.content === "ping") {
         msg.channel.send(`pong`);
     }
-    else if (msg.content === "image") {
-        // msg.channel.send(`pong`);
+    else if (msg.content === "$image") {
         await coffee_image().then(async link => {
-            // await interaction.channel.send(quote)
-            // await interaction.reply(quote)
-            // await msg.channel.send(`${msg.author} ${quote}`);
-            await msg.channel.send("My Bot's message");
-            // console.log(link)
+            await msg.channel.send("Here's a random coffee image");
             await msg.channel.send({ files: [`${link}`] });
         })
     }
-    else if (msg.content === "waifu") {
-        // msg.channel.send(`pong`);
-        await waifu().then(async link => {
-            // await interaction.channel.send(quote)
-            // await interaction.reply(quote)
-            // await msg.channel.send(`${msg.author} ${quote}`);
-            // await msg.channel.send("My Bot's message");
-            await console.log(link)
-            await msg.channel.send({ files: [`${link}`] });
-        })
-    }
-
 
     else if (sadWords.some(word => msg.content.includes(word))) {
         const encourage = encouragements[Math.floor(Math.random() * encouragements.length)]
         await msg.reply(encourage)
     }
     else if (msg.guild) {
-        // console.log("yo")
         msg.channel.send(`${pop} i love ${msg.content}`);
     }
 
