@@ -59,6 +59,7 @@ const client = new Client({
 });
 
 client.on('ready', () => {
+    // guild.channels.find(`name`, `general`).send(`Thx for invite`);
     console.log(`Logged in as ${client.user.tag}!`);
 });
 
@@ -95,7 +96,13 @@ const coffee_image = () => {
 }
 
 
-
+client.on('guildCreate', (guild) => {
+    guild.systemChannel.send("I have joined the server!");
+    coffee_image().then(async link => {
+        await guild.systemChannel.send("Here's a random coffee image");
+        await guild.systemChannel.send({ files: [`${link}`] });
+    })
+});
 
 client.on('interactionCreate', async interaction => {
 
