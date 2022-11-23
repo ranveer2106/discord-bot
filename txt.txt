@@ -1,0 +1,9 @@
+// const { REST, Routes } = require('discord.js');
+// const fetch = require("node-fetch")
+// require("dotenv").config();
+// import { DotenvConfigOptions } from "dotenv"
+// const DotenvConfigOptions = "dotenv"
+// const fetch = require('node-fetch');
+
+// https://api.nasa.gov/planetary/apod?api_key=Npz06Kczc6QKw0iCMDmWcrliedHxMkuN7OhFVt30
+// https://api.spoonacular.com/recipes/findByIngredients?ingredients=apples,+flour,+sugar&number=2&apiKey=bf82ff9da74c44f28d77cb72534ca2ce
